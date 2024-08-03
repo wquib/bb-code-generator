@@ -2,102 +2,6 @@ var image = [];
 var notableImage = [];
 var activeNotable = 0;
 
-
-// async function uploadImage(fileInput, from) {
-//     from = parseInt(from);
-//     const key = 'b02748e2928680fc10a79d661faecd55'; // imgBB API key
-//     const file = fileInput.files[0];
-//     const imageName = generateImageName();
-    
-//     if (!file) {
-//         alert('Please select a file!');
-//         return;
-//     }
-
-//     const formData = new FormData();
-//     formData.append('image', file);
-//     try {
-//         const response = await fetch(`https://api.imgbb.com/1/upload?key=${key}&name=${imageName}`, {
-//             method: 'POST',
-//             body: formData,
-//         });
-
-//         const data = await response.json();
-//         if (data.success) {
-//             console.log(data);
-//             switch (from) {
-//                 case 0:
-//                     image[0] = data.data.url;
-//                     break;
-//                 case 1:
-//                     image[1] = data.data.url;
-//                     break;
-//                 case 2:
-//                     notableImage.push(data.data.url);
-//                     break;
-//                 default:
-//                     return;
-//             }
-//         } else {
-//             alert('Image upload failed!');
-//         }
-//     } catch (error) {
-//         console.error('Error uploading image:', error);
-//         alert('Error uploading image!');
-//     }
-// }
-
-// function generateImageName() {
-//     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//     let result = '';
-//     const charactersLength = characters.length;
-  
-//     for (let i = 0; i < 7; i++) {
-//       const randomIndex = Math.floor(Math.random() * charactersLength);
-//       result += characters.charAt(randomIndex);
-//     }
-  
-//     return result;
-// }
-
-// Function to format date to YYYY-MM-DD
-function formatDate(date) {
-    let day = date.getDate();
-    let month = date.getMonth() + 1; // Months are zero-based
-    let year = date.getFullYear();
-
-    // Pad single digit day and month with leading zero
-    if(day < 10) day = '0' + day;
-    if(month < 10) month = '0' + month;
-
-    return year + '-' + month + '-' + day;
-}
-
-function formatNumber(number) {
-    number = parseInt(number);
-    if (number >= 1) {
-        return number.toString().padStart(3, '0');
-    } else {
-        return number;
-    }
-}
-
-let reportNumberForm = document.getElementById('report-number');
-reportNumberForm.addEventListener("input", function () {
-    let number = reportNumberForm.value.replace(/^0+/, '');
-    if (number.length > 3) {
-        number = reportNumberForm.value.slice(0, -1);
-        reportNumberForm.value = number;
-    }
-    reportNumberForm.value = formatNumber(number);
-});
-
-// Get today's date
-let today = new Date();
-
-// Set the value of the date input to today's date
-document.getElementById('date-input').value = formatDate(today);
-
 function generateBBCode() {
     document.getElementById('text-formatted').value = '';
 
@@ -110,9 +14,9 @@ function generateBBCode() {
     let startAt = document.getElementById('start-time').value;
     let endAt = document.getElementById('end-time').value;
 
-    // Initialize notable URL from Input to array
+    // Initialize notable URL from Input to notableImage array
     const inputs = document.querySelectorAll('.dynamic-input');
-    const notableImage = [];
+    notableImage = [];
     inputs.forEach(input => {
         values = input.value.trim();
         if(values !== '') {
@@ -159,6 +63,36 @@ function generateBBCode() {
 
     let copyBtn = document.getElementById('copy-btn')
     copyBtn.hidden = false;
+}
+
+const inputContainer = document.getElementById('inputContainer');
+const addInputBtn = document.getElementById('addInputBtn');
+const getValuesBtn = document.getElementById('getValuesBtn');
+
+// Fungsi untuk menambahkan input baru
+addInputBtn.addEventListener('click', function() {
+    const newInputContainer = document.createElement('div');
+    newInputContainer.className = 'input-container';
+    newInputContainer.innerHTML = '<input class="form-control dynamic-input mb-2" type="url" placeholder="https:://i.imgur.com/image.png">';
+    inputContainer.appendChild(newInputContainer);
+
+    const newInput = newInputContainer.querySelector('.dynamic-input');
+    newInput.focus();
+});
+
+function copyBBCode() {
+    let BBCodeText = document.getElementById('text-formatted');
+    if (BBCodeText && BBCodeText.value) {
+        navigator.clipboard.writeText(BBCodeText.value)
+            .then(() => {
+                alert('Text copied to clipboard');
+            })
+            .catch(err => {
+                alert('Failed to copy text: ' + err);
+            });
+    } else {
+        alert('No text to copy');
+    }
 }
 
 function dateFormat(value) {
@@ -232,32 +166,40 @@ function timeDifference(timeA, timeB) {
     }
 }
 
-const inputContainer = document.getElementById('inputContainer');
-const addInputBtn = document.getElementById('addInputBtn');
-const getValuesBtn = document.getElementById('getValuesBtn');
+// Function to format date to YYYY-MM-DD
+function formatDate(date) {
+    let day = date.getDate();
+    let month = date.getMonth() + 1; // Months are zero-based
+    let year = date.getFullYear();
 
-// Fungsi untuk menambahkan input baru
-addInputBtn.addEventListener('click', function() {
-    const newInputContainer = document.createElement('div');
-    newInputContainer.className = 'input-container';
-    newInputContainer.innerHTML = '<input class="form-control dynamic-input mb-2" type="url" placeholder="https:://i.imgur.com/image.png">';
-    inputContainer.appendChild(newInputContainer);
+    // Pad single digit day and month with leading zero
+    if(day < 10) day = '0' + day;
+    if(month < 10) month = '0' + month;
 
-    const newInput = newInputContainer.querySelector('.dynamic-input');
-    newInput.focus();
-});
+    return year + '-' + month + '-' + day;
+}
 
-function copyBBCode() {
-    let BBCodeText = document.getElementById('text-formatted');
-    if (BBCodeText && BBCodeText.value) {
-        navigator.clipboard.writeText(BBCodeText.value)
-            .then(() => {
-                alert('Text copied to clipboard');
-            })
-            .catch(err => {
-                alert('Failed to copy text: ' + err);
-            });
+function formatNumber(number) {
+    number = parseInt(number);
+    if (number >= 1) {
+        return number.toString().padStart(3, '0');
     } else {
-        alert('No text to copy');
+        return number;
     }
 }
+
+let reportNumberForm = document.getElementById('report-number');
+reportNumberForm.addEventListener("input", function () {
+    let number = reportNumberForm.value.replace(/^0+/, '');
+    if (number.length > 3) {
+        number = reportNumberForm.value.slice(0, -1);
+        reportNumberForm.value = number;
+    }
+    reportNumberForm.value = formatNumber(number);
+});
+
+// Get today's date
+let today = new Date();
+
+// Set the value of the date input to today's date
+document.getElementById('date-input').value = formatDate(today);
