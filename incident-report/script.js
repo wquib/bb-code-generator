@@ -1,3 +1,9 @@
+function updateRadioValue(input, id) {
+    let radio = document.getElementById(id);
+    // let input = document.getElementById(`input-${id}`);
+    radio.value = input.value;
+}
+
 function activeRadio(id) {
     let radio = document.getElementById(id);
     radio.checked = true;
@@ -24,7 +30,6 @@ function formatNumber(number) {
         return number;
     }
 }
-
 let reportNumberForm = document.getElementById('case');
 reportNumberForm.addEventListener("input", function () {
     let number = reportNumberForm.value.replace(/^0+/, '');
@@ -59,87 +64,218 @@ addInputBtn.addEventListener('click', function() {
 
 
 
+function generateBBCode() {
+    document.getElementById('text-formatted').value = '';
 
+    const 
+        date        = document.getElementById('date-input').value,
+        caseNumber  = document.getElementById('case').value,
+        location    = document.getElementById('location').value,
+        type        = document.getElementById('type').value,
+        suspectName = document.getElementById('suspectName').value,
+        reason      = document.getElementById('reason').value,
+        weapon      = getRadioValue('weapon'),
+        influence   = getRadioValue('influence'),
+        injured     = getRadioValue('injured'),
+        treatedBy   = getRadioValue('treatedBy'),
+        officerName = document.getElementById('officerName').value,
+        picName     = document.getElementById('picName').value,
+        uniform     = getRadioValue('uniform'),
+        weaponUsed  = getRadioValue('weaponUsed')
+    ;
 
-
-// var image = [];
-// var notableImage = [];
-// var activeNotable = 0;
-
-// function generateBBCode() {
-//     document.getElementById('text-formatted').value = '';
-
-//     let patrolPartner = document.getElementById('patrol-partner').value.trim();
-//     image[0] = document.getElementById('takeOffImg').value.trim();
-//     image[1] = document.getElementById('landingImg').value.trim();
-//     let date = document.getElementById('date-input').value;
-//     let reportNumber = document.getElementById('report-number').value;
-//     let patrolUnit = document.getElementById('patrol-unit').value;
-//     let startAt = document.getElementById('start-time').value;
-//     let endAt = document.getElementById('end-time').value;
-
-//     // Initialize notable URL from Input to notableImage array
-//     const inputs = document.querySelectorAll('.dynamic-input');
-//     notableImage = [];
-//     inputs.forEach(input => {
-//         values = input.value.trim();
-//         if(values !== '') {
-//             notableImage.push(values);
-//         }
-//     });
+    const idCardImg = document.getElementById('idCardImg').value;
+    const inputs = document.querySelectorAll('.dynamic-input');
+    let evidanceImage = [];
+    inputs.forEach(input => {
+        values = input.value.trim();
+        if(values !== '') {
+            evidanceImage.push(values);
+        }
+    });
+    const arrestImg = document.getElementById('arrestImg').value;
+    const footage = document.getElementById('footage').value;
     
-//     if (patrolPartner.trim() === '' || 
-//         date.trim() === '' ||
-//         reportNumber.trim() === '' ||
-//         patrolPartner.trim() === '' ||
-//         startAt.trim() === '' ||
-//         endAt.trim() === ''
-//     ) return;
+    // if (patrolPartner.trim() === '' || 
+    //     date.trim() === '' ||
+    //     reportNumber.trim() === '' ||
+    //     patrolPartner.trim() === '' ||
+    //     startAt.trim() === '' ||
+    //     endAt.trim() === ''
+    // ) return;
 
-//     let duration = timeDifference(startAt, endAt);
 
-//     let imgNotHTML = '';
-//     if (notableImage.length > 0) {
-//         for (let i = 0; i < notableImage.length; i++) {
-//             imgNotHTML += `[img]${notableImage[i]}[/img]\n`;
-//         }
-//     } else {
-//         imgNotHTML = 'N/A'
-//     }
-//     let format  = '[divbox=white][center][list][/list][img]https://i.postimg.cc/QCfJqFnW/ASD-Header.png[/img]\n';
-//         format += '[divbox=black][/divbox][/center]\n';
-//         format += `[b]Date:[/b] ${dateFormat(date)}\n`;
-//         format += `[b]Report Number:[/b] #${reportNumber}\n`;
-//         format += `[b]Duration:[/b] ${duration}\n`;
-//         format += `[b]Unit Callsign:[/b] ${patrolUnit}\n`;
-//         format += `[b]Patrol Partner:[/b] ${patrolPartner}\n`;
-//         format += '[b]Activity:[/b]\n';
-//         format += '[list]\n';
-//         format += '[*] Take Off\n';
-//         format += `[spoiler][img]${image[0]}[/img][/spoiler]\n`;
-//         format += '[*] Notable Situation (Optional)\n';
-//         format += `[spoiler]${imgNotHTML}[/spoiler]\n`;
-//         format += '[*] Landing\n';
-//         format += `[spoiler][img]${image[1]}[/img][/spoiler]\n`;
-//         format += '[/list]\n';
-//         format += '[/divbox]';
-//     document.getElementById('text-formatted').value = format;
+    let imgNotHTML = '';
+    if (evidanceImage.length > 0) {
+        for (let i = 0; i < evidanceImage.length; i++) {
+            imgNotHTML += `[img]${evidanceImage[i]}[/img]\n`;
+        }
+    } else {
+        imgNotHTML = 'N/A'
+    }
+    let format  = 
+`[divbox=transparent]
 
-//     let copyBtn = document.getElementById('copy-btn')
-//     copyBtn.hidden = false;
-// }
+[size=95]
+[center][img]https://i.imgur.com/2Zt5baY.png[/img]
 
-// function copyBBCode() {
-//     let BBCodeText = document.getElementById('text-formatted');
-//     if (BBCodeText && BBCodeText.value) {
-//         navigator.clipboard.writeText(BBCodeText.value)
-//             .then(() => {
-//                 alert('Text copied to clipboard');
-//             })
-//             .catch(err => {
-//                 alert('Failed to copy text: ' + err);
-//             });
-//     } else {
-//         alert('No text to copy');
-//     }
-// }
+[b]INCIDENT REPORT[/b][/center]
+[aligntable=left,250,15,0,0,0,transparent][b]CASE #:[/b] ${caseNumber}
+[b]Type:[/b] ${type}[/aligntable][aligntable=right,200,0,15,0,0,transparent][right][b]LOCATION:[/b] ${location.trim()}
+[b]DATE:[/b] ${dateFormat(date)}
+[/aligntable]
+
+[hr][/hr]
+[center][b][size=80]SUSPECT INFORMATION[/b][/size][/center]
+[hr][/hr]
+
+[aligntable=middle,0,15,15,0,0,transparent]
+Fullname: ${suspectName.trim()}
+Precise activity prior to use of foce: (i.e. assaulting, fleeing, passive resistances, etc.)
+${reason.trim()}
+Weapon(s):	[${weapon.id == 'sw-0' ? 'X' : ' '}] N/A	[${weapon.id == 'sw-1' ? 'X' : ' '}] Knife	[${weapon.id == 'sw-2' ? 'X' : ' '}] Vehicle	[${weapon.id == 'sw-3' ? 'X' : ' '}] Bite
+[list=none]	[${weapon.id == 'sw-4' ? 'X' : ' '}] Firearm (type): ${weapon.id == 'sw-4' ? weapon.value : ''}
+	[${weapon.id == 'sw-5' ? 'X' : ' '}] Blunt object (type): ${weapon.id == 'sw-5' ? weapon.value : ''}
+	[${weapon.id == 'sw-6' ? 'X' : ' '}] Hands/feet (technique): ${weapon.id == 'sw-6' ? weapon.value : ''}
+	[${weapon.id == 'sw-7' ? 'X' : ' '}] Other: ${weapon.id == 'sw-7' ? weapon.value : ''}[/list] 
+Under Influence: [${influence.id == 'i-0' ? 'X' : ' '}] Alcohol	[${influence.id == 'i-1' ? 'X' : ' '}] Drugs	[${influence.id == 'i-2' ? 'X' : ' '}] Unknown	[${influence.id == 'i-3' ? 'X' : ' '}] N/A
+
+Injured: [${injured.id == 'ij-0' ? 'X' : ' '}] No	[${injured.id == 'ij-1' ? 'X' : ' '}] Yes${injured.id == 'ij-1' ? `, ${injured.value}` : ' '}
+Treated by: [${treatedBy.id == 't-0' ? 'X' : ' '}] Officer	[${treatedBy.id == 't-1' ? 'X' : ' '}] Fire department	[${treatedBy.id == 't-2' ? 'X' : ' '}] Emergency room	[${treatedBy.id == 't-3' ? 'X' : ' '}] N/A
+[/aligntable]
+[hr][/hr]
+[center][b][size=80]OFFICER INFORMATION[/b][/size][/center]
+[hr][/hr]
+[aligntable=middle,0,15,15,0,0,transparent]
+Fullname: ${officerName.trim()}
+Person in-charge of use of force: ${picName.trim()}
+Uniform: [${uniform.id == 'u-0' ? 'X' : ' '}] Patrol uniform	[${uniform.id == 'u-1' ? 'X' : ' '}] Tactical	[${uniform.id == 'u-2' ? 'X' : ' '}] Plain clothes
+Weapon used at time of incident: [${weaponUsed.id == 'wu-0' ? 'X' : ' '}] Handgun	[${weaponUsed.id == 'wu-1' ? 'X' : ' '}] Rubber shotgun	[${weaponUsed.id == 'wu-2' ? 'X' : ' '}] Lethal shotgun [${weaponUsed.id == 'wu-3' ? 'X' : ' '}] Submachine guns [${weaponUsed.id == 'wu-4' ? 'X' : ' '}] Automatic rifle [${weaponUsed.id == 'wu-5' ? 'X' : ' '}] Tazer [${weaponUsed.id == 'wu-6' ? 'X' : ' '}] Spike Strip
+[/aligntable]
+
+[hr][/hr]
+[center][b][size=80]RESOURCE INFORMATION[/b][/size][/center]
+[hr][/hr]
+
+[aligntable=middle,0,15,15,0,0,transparent]
+[secspoiler=ID Card][img]${idCardImg.trim()}[/img][/secspoiler]
+[secspoiler=Evidence Record]${imgNotHTML}[/secspoiler]
+[secspoiler=Arrest Record/ICD Record][img]${arrestImg.trim()}[/img][/secspoiler]
+[secspoiler=Video/Dashcam Footage, if available]${footage.trim() == '' ? 'N/A' : footage.trim()}[/secspoiler]
+[/aligntable]
+
+
+[space][/space]
+[/divbox]`;
+    document.getElementById('text-formatted').value = format;
+
+    document.getElementById('copy-btn').hidden = false;
+    document.getElementById('title-body').hidden = false;
+
+    let title = `Case #${caseNumber} - ${type} - ${officerName} - ${dateFormat(date)}`;
+    document.getElementById('title-text').innerHTML = title;
+
+}
+
+function copyBBCode() {
+    let BBCodeText = document.getElementById('text-formatted');
+    if (BBCodeText && BBCodeText.value) {
+        navigator.clipboard.writeText(BBCodeText.value)
+            .then(() => {
+                // alert('Text copied to clipboard');
+            })
+            .catch(err => {
+                alert('Failed to copy text: ' + err);
+            });
+    } else {
+        alert('No text to copy');
+    }
+}
+
+function dateFormat(value) {
+    let dateInput = value;
+    let dateParts = dateInput.split('-');
+
+    let year = dateParts[0];
+    let month = dateParts[1];
+    let day = dateParts[2];
+
+    return `${day}/${month}/${year}`;
+}
+
+function getRadioValue(name) {
+    const radios = document.querySelectorAll(`input[name="${name}"]`);
+    const checkedRadio = Array.from(radios).find(radio => radio.checked);
+    if (checkedRadio) {
+        const checkedValue = checkedRadio.value.trim();
+        const checkedId = checkedRadio.id.trim();
+
+        if (checkedValue === null) checkedValue = '';
+        return {
+            value: checkedValue,
+            id: checkedId,
+        }
+    } else return {
+        value: '',
+        id: '',
+    }
+}
+
+function viewData() {
+    const 
+        date        = document.getElementById('date-input').value,
+        caseNumber  = document.getElementById('case').value,
+        location    = document.getElementById('location').value,
+        type        = document.getElementById('type').value,
+        suspectName = document.getElementById('suspectName').value,
+        reason      = document.getElementById('reason').value,
+        weapon      = getRadioValue('weapon'),
+        influence   = getRadioValue('influence'),
+        injured     = getRadioValue('injured'),
+        treatedBy   = getRadioValue('treatedBy'),
+        officerName = document.getElementById('officerName').value,
+        picName     = document.getElementById('picName').value,
+        uniform     = getRadioValue('uniform'),
+        weaponUsed  = getRadioValue('weaponUsed')
+    ;
+
+    const idCardImg = document.getElementById('idCardImg').value;
+    const inputs = document.querySelectorAll('.dynamic-input');
+    let evidanceImage = [];
+    inputs.forEach(input => {
+        values = input.value.trim();
+        if(values !== '') {
+            evidanceImage.push(values);
+        }
+    });
+    const arrestImg = document.getElementById('arrestImg').value;
+    const footage = document.getElementById('footage').value;
+    
+    console.clear();
+
+    console.log(`date: ${dateFormat(date)}`);
+    console.log(`caseNumber: ${caseNumber}`);
+    console.log(`location: ${location}`);
+    console.log(`type: ${type}`);
+    
+    console.log('=================');
+    console.log(`suspectName: ${suspectName}`);
+    console.log(`reason: ${reason}`);
+    console.log(`weapon: ${weapon.value} ID: ${weapon.id}`);
+    console.log(`influence: ${influence.value} ID: ${influence.id}`);
+    console.log(`injured: ${injured.value} ID: ${injured.id}`);
+    console.log(`treatedBy: ${treatedBy.value} ID: ${treatedBy.id}`);
+    
+    console.log('=================');
+    console.log(`officerName: ${officerName}`);
+    console.log(`picName: ${picName}`);
+    console.log(`uniform: ${uniform.value} ID: ${uniform.id}`);
+    console.log(`weaponUsed: ${weaponUsed.value} ID: ${weaponUsed.id}`);
+    
+    console.log('=================');
+    console.log(`idCardImg: ${idCardImg}`);
+    console.log(`notableImage: ${evidanceImage}`);
+    console.log(`arrestImg: ${arrestImg}`);
+    console.log(`footage: ${footage}`);
+
+}
