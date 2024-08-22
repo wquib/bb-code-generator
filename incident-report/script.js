@@ -1,14 +1,10 @@
-function updateRadioValue(input, id) {
-    let radio = document.getElementById(id);
-    // let input = document.getElementById(`input-${id}`);
-    radio.value = input.value;
-}
-
-function activeRadio(id) {
-    let radio = document.getElementById(id);
-    radio.checked = true;
-}
-
+// On page loaded handler
+document.addEventListener('DOMContentLoaded', function () {
+    let today = new Date();    
+    document.getElementById('date-input').value = formatDate(today);
+    
+    document.getElementById('officerName').value = getCookie('officerName');
+});
 // Function to format date to YYYY-MM-DD
 function formatDate(date) {
     let day = date.getDate();
@@ -22,16 +18,21 @@ function formatDate(date) {
     return year + '-' + month + '-' + day;
 }
 
+// officerName on input handler
+document.getElementById('officerName').addEventListener('input', function () {
+    setCookie('officerName', document.getElementById('officerName').value, 30);
+});
+
 function formatNumber(number) {
-    number = parseInt(number);
+    number = parseInt(number);        
     if (number >= 1) {
         return number.toString().padStart(3, '0');
     } else {
         return number;
     }
 }
-let reportNumberForm = document.getElementById('case');
-reportNumberForm.addEventListener("input", function () {
+document.getElementById('case').addEventListener("input", function () {
+    const reportNumberForm = document.getElementById('case');
     let number = reportNumberForm.value.replace(/^0+/, '');
     if (number.length > 3) {
         number = reportNumberForm.value.slice(0, -1);
@@ -40,11 +41,17 @@ reportNumberForm.addEventListener("input", function () {
     reportNumberForm.value = formatNumber(number);
 });
 
-// Get today's date
-let today = new Date();
+function updateRadioValue(input, id) {
+    let radio = document.getElementById(id);
+    // let input = document.getElementById(`input-${id}`);
+    radio.value = input.value;
+}
 
-// Set the value of the date input to today's date
-document.getElementById('date-input').value = formatDate(today);
+function activeRadio(id) {
+    let radio = document.getElementById(id);
+    radio.checked = true;
+}
+
 
 const inputContainer = document.getElementById('inputContainer');
 const addInputBtn = document.getElementById('addInputBtn');
@@ -66,6 +73,8 @@ addInputBtn.addEventListener('click', function() {
 
 function generateBBCode() {
     document.getElementById('text-formatted').value = '';
+    document.getElementById('copy-btn').hidden = true;
+    document.getElementById('title-body').hidden = true;
 
     const 
         date        = document.getElementById('date-input').value,
@@ -96,14 +105,24 @@ function generateBBCode() {
     const arrestImg = document.getElementById('arrestImg').value;
     const footage = document.getElementById('footage').value;
     
-    // if (patrolPartner.trim() === '' || 
-    //     date.trim() === '' ||
-    //     reportNumber.trim() === '' ||
-    //     patrolPartner.trim() === '' ||
-    //     startAt.trim() === '' ||
-    //     endAt.trim() === ''
-    // ) return;
-
+    if (
+        date.trim() === '' || 
+        caseNumber.trim() === '' || 
+        location.trim() === '' || 
+        type.trim() === '' ||
+        suspectName.trim() === '' ||
+        reason.trim() === '' ||
+        weapon.value.trim() === '' ||
+        influence.value.trim() === '' ||
+        injured.value.trim() === '' ||
+        treatedBy.value.trim() === '' ||
+        officerName.trim() === '' ||
+        picName.trim() === '' ||
+        uniform.value.trim() === '' ||
+        weaponUsed.value.trim() === '' || 
+        idCardImg.trim() === '' ||
+        arrestImg.trim() === ''
+    ) return console.error('Please input an required field');
 
     let imgNotHTML = '';
     if (evidanceImage.length > 0) {
@@ -167,6 +186,7 @@ Weapon used at time of incident: [${weaponUsed.id == 'wu-0' ? 'X' : ' '}] Handgu
 
 [space][/space]
 [/divbox]`;
+
     document.getElementById('text-formatted').value = format;
 
     document.getElementById('copy-btn').hidden = false;
@@ -219,6 +239,30 @@ function getRadioValue(name) {
         value: '',
         id: '',
     }
+}
+
+
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }
 
 function viewData() {

@@ -8,19 +8,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
     <style>
-        .h1-top {
-            position: fixed;
-            top: 4%;
+        html {
+            height: 100%;
+        }
+        body {
+            height: 80%;
+        }
+        .container-grid {
+            display: grid;
+            place-items: center;
+            height: 100%;
         }
     </style>
 
     <title>BB Code Generator</title>
-<body style="background-color: rgb(40, 40, 40);" class="px-2">
-    <div class="container-xl">
-        <div class="content d-flex justify-content-center align-items-center min-vh-100">
-            <h1 class="text-center h1-top">Daily Report Tools</h1>
-            <div class="list-group text-center w-50" style="min-width: 300px;">
-                <div style="height: 80px;"></div>
+<body style="background-color: rgb(40, 40, 40);">
+    
+    <div class="m-2 h-100">
+        <h1 class="text-center my-3">Daily Report Tools</h1>
+
+        <div class="container-grid">
+            <div class="list-group text-center container" style="padding: 0 !important">
                 <a href="./incident-report/" class="list-group-item list-group-item-action">
                     <h5 class="mb-1">DO: Incident Report</h5>
                     <p class="mb-1">BB Code Generator for Incident Report of Daily Operation</p>
@@ -33,9 +41,9 @@
                     <h5 class="mb-1">Penal Code</h5>
                     <p class="mb-1">SAPD 2024 Penal Code Calculation Tools</p>
                 </a>
-                <div style="height: 80px;"></div>
             </div>
         </div>
+
     </div>
 
     <!-- Bootstrap -->
