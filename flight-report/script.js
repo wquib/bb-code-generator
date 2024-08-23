@@ -1,6 +1,5 @@
 var image = [];
 var notableImage = [];
-var activeNotable = 0;
 
 function generateBBCode() {
     document.getElementById('text-formatted').value = '';
@@ -23,13 +22,17 @@ function generateBBCode() {
             notableImage.push(values);
         }
     });
+
+    if (patrolPartner === '') patrolPartner = 'N/A';
     
     if (patrolPartner.trim() === '' || 
         date.trim() === '' ||
         reportNumber.trim() === '' ||
         patrolPartner.trim() === '' ||
         startAt.trim() === '' ||
-        endAt.trim() === ''
+        endAt.trim() === '' ||
+        image[0].trim() === '' ||
+        image[1].trim() === ''
     ) return;
 
     let duration = timeDifference(startAt, endAt);
@@ -179,6 +182,29 @@ function formatDate(date) {
     return year + '-' + month + '-' + day;
 }
 
+function setCookie(cname, cvalue, exdays) {
+    const d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    let expires = "expires="+ d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let decodedCookie = decodeURIComponent(document.cookie);
+    let ca = decodedCookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
+
 function formatNumber(number) {
     number = parseInt(number);
     if (number >= 1) {
@@ -195,7 +221,12 @@ reportNumberForm.addEventListener("input", function () {
         number = reportNumberForm.value.slice(0, -1);
         reportNumberForm.value = number;
     }
-    reportNumberForm.value = formatNumber(number);
+
+    let formattedRN = formatNumber(number);
+    if (reportNumberForm.value !== '') {
+        reportNumberForm.value = formattedRN;
+    }
+    setCookie('reportNumber', reportNumberForm.value, 30);    
 });
 
 // Get today's date
@@ -203,3 +234,27 @@ let today = new Date();
 
 // Set the value of the date input to today's date
 document.getElementById('date-input').value = formatDate(today);
+
+reportNumberForm.value = getCookie('reportNumber');
+
+
+// Autocomplete for ASD member name using JQuery Autocomplete
+$( function() {
+    var ASDMemberList = [
+      "Benny Stankovic",
+      "Cameron Alfonso",
+      "Charlie McKnight",
+      "Clarissa Francisca",
+      "Fiete Steinhaeusser",
+      "Jeanie Gillespie",
+      "Joshua Elimelech",
+      "Lucas Rutherford",
+      "Robert Gifford",
+      "Zacchaeus Nazarius",
+      "Zephyr Parker",
+      "Zhien Fa",
+    ];
+    $( "#patrol-partner" ).autocomplete({
+      source: ASDMemberList
+    });
+} );
