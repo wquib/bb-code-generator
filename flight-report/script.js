@@ -45,7 +45,7 @@ function generateBBCode() {
     } else {
         imgNotHTML = 'N/A'
     }
-    let format  = '[divbox=white][center][list][/list][img]https://i.postimg.cc/QCfJqFnW/ASD-Header.png[/img]\n';
+    let format  = '[divbox=white][center][list][/list][img]https://i.postimg.cc/sxqYTzTd/1nJzmTG.png[/img]\n';
         format += '[divbox=black][/divbox][/center]\n';
         format += `[b]Date:[/b] ${dateFormat(date)}\n`;
         format += `[b]Report Number:[/b] #${reportNumber}\n`;
@@ -88,7 +88,7 @@ function copyBBCode() {
     if (BBCodeText && BBCodeText.value) {
         navigator.clipboard.writeText(BBCodeText.value)
             .then(() => {
-                alert('Text copied to clipboard');
+                // alert('Text copied to clipboard');
             })
             .catch(err => {
                 alert('Failed to copy text: ' + err);
