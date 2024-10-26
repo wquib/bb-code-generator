@@ -242,16 +242,17 @@ reportNumberForm.value = getCookie('reportNumber');
 $( function() {
     var ASDMemberList = [
       "Benny Stankovic",
-      "Cameron Alfonso",
+    //   "Cameron Alfonso",
       "Charlie McKnight",
-      "Clarissa Francisca",
+    //   "Clarissa Francisca",
       "Fiete Steinhaeusser",
-      "Jeanie Gillespie",
+      "Hugo Erazino",
+    //   "Jeanie Gillespie",
       "Joshua Elimelech",
-      "Lucas Rutherford",
+    //   "Lucas Rutherford",
       "Robert Gifford",
       "Zacchaeus Nazarius",
-      "Zephyr Parker",
+    //   "Zephyr Parker",
       "Zhien Fa",
     ];
     $( "#patrol-partner" ).autocomplete({
