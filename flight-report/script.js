@@ -241,19 +241,15 @@ reportNumberForm.value = getCookie('reportNumber');
 // Autocomplete for ASD member name using JQuery Autocomplete
 $( function() {
     var ASDMemberList = [
-      "Benny Stankovic",
-    //   "Cameron Alfonso",
-      "Charlie McKnight",
-    //   "Clarissa Francisca",
-      "Fiete Steinhaeusser",
-      "Hugo Erazino",
-    //   "Jeanie Gillespie",
-      "Joshua Elimelech",
-    //   "Lucas Rutherford",
-      "Robert Gifford",
-      "Zacchaeus Nazarius",
-    //   "Zephyr Parker",
-      "Zhien Fa",
+        "Calysta Crescencia",
+        "Clarissa Francisca",
+        "Edward Cowrasz",
+        "Ibrahim Elayyubi",
+        "Jeanie Gillespie",
+        "Keylon Pierce",
+        "Robert Gifford",
+        "Svyatoslav Stepanovich",
+        "Zhien Fa",
     ];
     $( "#patrol-partner" ).autocomplete({
       source: ASDMemberList
